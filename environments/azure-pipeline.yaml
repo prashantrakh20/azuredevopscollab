@@ -1,0 +1,32 @@
+pool:
+  name: Azure Pipelines
+  demands: azureps
+
+steps:
+- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
+  displayName: 'Terraform init'
+  inputs:
+    TemplatePath: environments/
+    Arguments: init
+    InstallTerraform: true
+    UseAzureSub: true
+    ConnectedServiceNameARM: 'Free Trial (47f2a62c-6776-40be-bcbb-dd42c0e0bb9a)'
+
+- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
+  displayName: 'Terraform plan'
+  inputs:
+    TemplatePath: environments
+    Arguments: 'plan --var-file=dev.tfvars'
+    InstallTerraform: true
+    UseAzureSub: true
+    ConnectedServiceNameARM: 'Free Trial (47f2a62c-6776-40be-bcbb-dd42c0e0bb9a)'
+
+- task: petergroenewegen.PeterGroenewegen-Xpirit-Vsts-Release-Terraform.Xpirit-Vsts-Release-Terraform.Terraform@2
+  displayName: 'Terraform apply'
+  inputs:
+    TemplatePath: environments
+    Arguments: 'apply --var-file=dev.tfvars -auto-approve'
+    InstallTerraform: true
+    UseAzureSub: true
+    ConnectedServiceNameARM: 'Free Trial (47f2a62c-6776-40be-bcbb-dd42c0e0bb9a)'
+
